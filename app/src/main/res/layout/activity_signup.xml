@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.signup.SignupActivity"
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="20dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/login_input_name"
+        android:textSize="@dimen/tips_text_size"
+        android:id="@+id/tips_signup_name"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tips_signup_name"
+        android:layout_marginTop="10dp"
+        android:id="@+id/input_login_name"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/input_login_name"
+        android:layout_marginTop="30dp"
+        android:text="@string/login_input_password"
+        android:textSize="@dimen/tips_text_size"
+        android:id="@+id/tips_password"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tips_password"
+        android:layout_marginTop="10dp"
+        android:password="true"
+        android:id="@+id/input_login_password"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/input_login_password"
+        android:layout_marginTop="30dp"
+        android:text="@string/login_input_password_again"
+        android:textSize="@dimen/tips_text_size"
+        android:id="@+id/tips_password_again"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tips_password_again"
+        android:layout_marginTop="10dp"
+        android:password="true"
+        android:id="@+id/input_login_password_again"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/input_login_password_again"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="50dp"
+        android:text="@string/signup"
+        android:id="@+id/btn_login"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
