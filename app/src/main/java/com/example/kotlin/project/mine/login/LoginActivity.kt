@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import com.example.kotlin.project.mine.MainActivity
 import com.example.kotlin.project.mine.databinding.ActivityLoginBinding
 import com.example.kotlin.project.mine.login.signup.SignupActivity
 import com.example.kotlin.project.mine.login.state.LoginIntent
@@ -65,18 +66,23 @@ class LoginActivity : AppCompatActivity() {
             viewModel.state.collect {
                 when(it) {
                     is LoginState.Idle -> {
+                        println("==== Idle ====")
                         binding.progressBar.visibility = View.GONE
                     }
 
                     is LoginState.Loading -> {
+                        println("==== Loading ====")
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is LoginState.UserData -> {
+                        println("==== Success ====")
                         // 请求成功数据
                         binding.progressBar.visibility = View.GONE
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     }
 
                     is LoginState.Error -> {
+                        println("==== Error ====")
                         binding.progressBar.visibility = View.GONE
                         println("error => ${it.error.errorCode},msg:${it.error.errorMsg}")
                     }

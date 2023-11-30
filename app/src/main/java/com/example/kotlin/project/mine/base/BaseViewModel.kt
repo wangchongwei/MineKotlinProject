@@ -7,6 +7,7 @@ open class BaseViewModel : ViewModel() {
 
 
     fun<T> handleResponse(response: NetworkResponse<T>): T {
+        println("真实数据: ${response.errorCode},${response.errorMsg}, ${response.data}")
         if(response.errorCode == 0) {
             return response.data !!
         }

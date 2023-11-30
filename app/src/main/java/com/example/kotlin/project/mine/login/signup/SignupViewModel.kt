@@ -1,15 +1,14 @@
-package com.example.kotlin.project.mine.login
+package com.example.kotlin.project.mine.login.signup
 
 import android.text.Editable
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kotlin.project.mine.base.BaseViewModel
+import com.example.kotlin.project.mine.login.UserRepository
 import com.example.kotlin.project.mine.login.state.LoginIntent
 import com.example.kotlin.project.mine.login.state.LoginState
 import com.example.kotlin.project.mine.network.NetworkResponse
 import com.example.kotlin.project.mine.utils.VerifyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,16 +23,16 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor (val repository: UserRepository) : BaseViewModel() {
+class SignupViewModel @Inject constructor(val repository: UserRepository) : BaseViewModel() {
 
     private var loginName: String = ""
     private var loginPassword: String = ""
+    private var repeatPassword: String = ""
 
     val userIntent = Channel<LoginIntent>(Channel.UNLIMITED)
     private val _state = MutableStateFlow<LoginState>(LoginState.Idle)
     val state: StateFlow<LoginState>
         get() = _state
-
 
     init {
         handleIntent()
@@ -45,14 +44,39 @@ class LoginViewModel @Inject constructor (val repository: UserRepository) : Base
             userIntent.consumeAsFlow()
                 .collect {
                     when(it) {
-                        is LoginIntent.Login -> login()
+                        is LoginIntent.Login -> signup()
                     }
                 }
         }
     }
 
+    private fun signup() {
+        if (VerifyUtils.isLoginNameValid(loginName)
+            && VerifyUtils.isLoginPasswordValid(loginPassword)
+            && VerifyUtils.isEqualsPassword(loginPassword, repeatPassword)
+        ) {
+            _state.value = LoginState.Loading
+            println("账号密码等均合法")
+            viewModelScope.launch (Dispatchers.IO) {
+                repository.signup(loginName, loginPassword, repeatPassword)
+                    .map {
+                        _state.value = try {
+                            LoginState.UserData(handleResponse(it))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            LoginState.Error(NetworkResponse(null, 500, "${e.message}"))
+                        }
+                    }
+                    .catch {
+                        it.printStackTrace()
+                    }
+                    .collect{}
 
-
+            }
+        } else {
+            println("账号或密码不符合格式!!")
+        }
+    }
 
     fun onLoginNameInputChange(editable: Editable?) {
         loginName = editable.toString()
@@ -62,29 +86,8 @@ class LoginViewModel @Inject constructor (val repository: UserRepository) : Base
         loginPassword = editable.toString()
     }
 
-
-    fun login() {
-        if (VerifyUtils.isLoginNameValid(loginName) && VerifyUtils.isLoginPasswordValid(loginPassword)) {
-            _state.value = LoginState.Loading
-            viewModelScope.launch(Dispatchers.IO) {
-                repository.login(loginName, loginPassword)
-                    .map {
-                        _state.value = try {
-                            println("network success!!! ${it.data?.id}")
-                            LoginState.UserData(handleResponse(it))
-                        } catch (err: Exception) {
-                            err.printStackTrace()
-                            LoginState.Error(it)
-                        }
-                    }
-                    .catch {
-                        _state.value = LoginState.Error(NetworkResponse(data = null, errorCode = 500, errorMsg = "error: ${it.message}"))
-                    }
-                    .collect {  }
-
-            }
-        } else {
-            println("===== 数据格式不合法 =====");
-        }
+    fun onRepeatPasswordChange(editable: Editable?) {
+        repeatPassword = editable.toString()
     }
+
 }
