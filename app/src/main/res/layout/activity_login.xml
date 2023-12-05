@@ -48,6 +48,7 @@
         />
 
     <Button
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/input_login_password"
@@ -55,16 +56,19 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="50dp"
         android:text="@string/login"
-        android:id="@+id/btn_login"
+        android:textColor="@color/white"
+        android:background="@drawable/login_login_btn_bg"
         />
 
     <Button
+        android:id="@+id/btn_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/btn_login"
         android:layout_marginTop="10dp"
         android:text="@string/ready_signup"
-        android:id="@+id/btn_signup"
+        android:textColor="@color/white"
+        android:background="@drawable/login_login_btn_bg"
         />
 
     <ProgressBar

@@ -8,4 +8,8 @@
     <string name="ready_signup">还未有账号，前去注册</string>
     <string name="signup">注册</string>
     <string name="cancel">取消</string>
+
+    <string name="home">首页</string>
+    <string name="collect">收藏</string>
+    <string name="mine">个人</string>
 </resources>
